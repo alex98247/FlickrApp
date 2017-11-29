@@ -15,6 +15,9 @@
 		FA3458A11FC7554900F25092 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458A01FC7554900F25092 /* main.m */; };
 		FA3458AB1FC7554900F25092 /* FlickrPicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458AA1FC7554900F25092 /* FlickrPicTests.m */; };
 		FA3458B61FC7554900F25092 /* FlickrPicUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458B51FC7554900F25092 /* FlickrPicUITests.m */; };
+		FA3458C51FC7586E00F25092 /* Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458C41FC7586E00F25092 /* Flickr.m */; };
+		FA3458C81FCB542800F25092 /* TagListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458C71FCB542800F25092 /* TagListTableViewController.m */; };
+		FA3458CB1FCC03CD00F25092 /* ImagesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458CA1FCC03CD00F25092 /* ImagesCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,12 @@
 		FA3458B11FC7554900F25092 /* FlickrPicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrPicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA3458B51FC7554900F25092 /* FlickrPicUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickrPicUITests.m; sourceTree = "<group>"; };
 		FA3458B71FC7554900F25092 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA3458C31FC7586E00F25092 /* Flickr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Flickr.h; sourceTree = "<group>"; };
+		FA3458C41FC7586E00F25092 /* Flickr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Flickr.m; sourceTree = "<group>"; };
+		FA3458C61FCB542800F25092 /* TagListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TagListTableViewController.h; sourceTree = "<group>"; };
+		FA3458C71FCB542800F25092 /* TagListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TagListTableViewController.m; sourceTree = "<group>"; };
+		FA3458C91FCC03CD00F25092 /* ImagesCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagesCollectionViewController.h; sourceTree = "<group>"; };
+		FA3458CA1FCC03CD00F25092 /* ImagesCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagesCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +115,12 @@
 				FA3458941FC7554900F25092 /* ViewController.h */,
 				FA3458951FC7554900F25092 /* ViewController.m */,
 				FA3458971FC7554900F25092 /* Main.storyboard */,
+				FA3458C91FCC03CD00F25092 /* ImagesCollectionViewController.h */,
+				FA3458CA1FCC03CD00F25092 /* ImagesCollectionViewController.m */,
+				FA3458C61FCB542800F25092 /* TagListTableViewController.h */,
+				FA3458C71FCB542800F25092 /* TagListTableViewController.m */,
+				FA3458C31FC7586E00F25092 /* Flickr.h */,
+				FA3458C41FC7586E00F25092 /* Flickr.m */,
 				FA34589A1FC7554900F25092 /* Assets.xcassets */,
 				FA34589C1FC7554900F25092 /* LaunchScreen.storyboard */,
 				FA34589F1FC7554900F25092 /* Info.plist */,
@@ -266,7 +281,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3458961FC7554900F25092 /* ViewController.m in Sources */,
+				FA3458C81FCB542800F25092 /* TagListTableViewController.m in Sources */,
+				FA3458CB1FCC03CD00F25092 /* ImagesCollectionViewController.m in Sources */,
 				FA3458A11FC7554900F25092 /* main.m in Sources */,
+				FA3458C51FC7586E00F25092 /* Flickr.m in Sources */,
 				FA3458931FC7554900F25092 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
