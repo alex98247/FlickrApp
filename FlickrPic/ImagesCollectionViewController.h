@@ -7,12 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Flickr.h"
 
 @interface ImagesCollectionViewController : UICollectionViewController
 
-@property (nonatomic, retain) NSString *str;
-@property (nonatomic, retain) Flickr *flicr;
-
+@property (nonatomic, retain) NSString *tag;
 
 @end

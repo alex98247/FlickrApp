@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface Flickr : NSObject
--(void)Flickr;
--(NSArray *)GetHotTags: (int) count;
--(NSArray *)GetImId: (NSString *) tag;
--(NSData *)GetIm: (NSString *) ImId;
+-(void)GetHotTags: (int) count  success:(void (^)(NSArray *responseArray))success failure:(void(^)(NSError* error))failure;
+-(void)GetIm: (NSString *) ImId Size:(NSString *) size success:(void (^)(UIImage *image))success failure:(void(^)(NSError* error))failure;
+-(void)GetImId: (NSString *) tag success:(void (^)(NSArray *responseArray))success failure:(void(^)(NSError* error))failure;
 @end

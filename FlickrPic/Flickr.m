@@ -9,106 +9,141 @@
 #import "Flickr.h"
 
 @implementation Flickr{
-    NSString* key; // @"2597dd27154bcea8c20fc867defe6ac6";
+    const NSString *key; // @"2597dd27154bcea8c20fc867defe6ac6";
     NSString* token;
     NSURLSession* session;
-    NSURL* url;
 }
 
--(void)Flickr{
+-(id)init{
     key = @"2597dd27154bcea8c20fc867defe6ac6";
-    NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
-    
+    session = [NSURLSession sharedSession];
+    return self;
 }
 
--(NSArray *)GetHotTags: (int) count
+-(void)GetHotTags: (int) count success:(void (^)(NSArray *responseArray))success failure:(void(^)(NSError* error))failure
 {
-    __block NSMutableArray *result = [[NSMutableArray alloc] init];
-
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-    url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.tags.gethotlist&nojsoncallback=1&format=json&api_key=%@&count=%d", key, count]];
+    NSMutableArray* ar = [[NSMutableArray alloc] init];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.tags.gethotlist&nojsoncallback=1&format=json&api_key=%@&count=%d", key, count]];
     NSURLSessionTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        NSError *e = nil;
-        NSDictionary *request = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingAllowFragments error: &e];
-        
-        if([[request valueForKey:@"stat"]  isEqual: @"ok"]){
+        if(error == nil){
+            NSError *e = nil;
+            NSDictionary *request = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingAllowFragments error: &e];
             
-            NSDictionary *tags  =  [[request valueForKey:@"hottags"] valueForKey:@"tag"];
-            for(NSDictionary *tag in tags){
-                NSLog(@"Item: %@", [tag valueForKey:(@"_content")]);
-                [result addObject: [tag valueForKey:(@"_content")]];
-            }
-            
-        }
-        dispatch_semaphore_signal(semaphore);
-    }];
-    [task resume];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    return result;
-}
-
--(NSData *)GetIm: (NSString *) ImId{
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    __block NSData * imageData = [[NSData alloc] initWithContentsOfURL: url];
-
-
-    url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&format=json&api_key=%@&photo_id=%@", key, ImId]];
-    
-    NSURLSessionTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        NSError *e = nil;
-        NSDictionary *request = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingAllowFragments error: &e];
-        
-        if([[request valueForKey:@"stat"]  isEqual: @"ok"]){
-            
-            NSDictionary *photosize  =  [[request valueForKey:@"sizes"] valueForKey:@"size"];
-            for(NSDictionary *photo in photosize){
-                if([[photo valueForKey:(@"label")] isEqualToString:@"Square"]) {
-                    NSLog(@"Item: %@", [photo valueForKey:(@"source")]);
-                    imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[photo valueForKey:(@"source")]]];
+            if([[request valueForKey:@"stat"]  isEqual: @"ok"]){
+                
+                NSDictionary *tags  =  [[request valueForKey:@"hottags"] valueForKey:@"tag"];
+                for(NSDictionary *tag in tags){
+                    [ar addObject:[tag valueForKey:(@"_content")]];
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{ success(ar); }); //return into main thread
             }
-            
+            else
+            {
+                //bad request from server
+            }
         }
-        dispatch_semaphore_signal(semaphore);
+        else
+        {
+            //error in NSURLSessionTask
+            dispatch_async(dispatch_get_main_queue(), ^{ failure(error); }); //return into main thread
+        }
     }];
     [task resume];
-    
-    //cell.image = [UIImage imageWithData: imageData];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    return imageData;
 }
 
--(NSArray *)GetImId: (NSString *) tag
-{
-    __block NSMutableArray *result = [[NSMutableArray alloc] init];
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
-    url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.photos.search&nojsoncallback=1&format=json&api_key=%@&tags=%@", key, tag]];
-    NSURLSessionTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
+-(void)GetIm: (NSString *) ImId Size:(NSString *) size success:(void (^)(UIImage *image))success failure:(void(^)(NSError* error))failure{
+    
+    __block NSString * imageUrl;
+
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&format=json&api_key=%@&photo_id=%@", key, ImId]];
+    
+    NSURLSessionTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
         NSError *e = nil;
         NSDictionary *request = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingAllowFragments error: &e];
         
-        if([[request valueForKey:@"stat"]  isEqual: @"ok"]){
+        if(error == nil)
+        {
+            if([[request valueForKey:@"stat"]  isEqual: @"ok"])
+            {
+                NSDictionary *photosize  =  [[request valueForKey:@"sizes"] valueForKey:@"size"];
             
-            NSDictionary *photo  =  [[request valueForKey:@"photos"] valueForKey:@"photo"];
-            for(NSDictionary *tag in photo){
-                NSLog(@"Item: %@", [tag valueForKey:(@"id")]);
-                [result addObject: [tag valueForKey:(@"id")]];
+                for(NSDictionary *photo in photosize)
+                {
+                    if([[photo valueForKey:(@"label")] isEqualToString:size]) //find matching size
+                    {
+                        imageUrl = [photo valueForKey:(@"source")];
+                        break;
+                    }
+                }
+                [self DownloadPic:[NSURL URLWithString:imageUrl] success:^(UIImage *image) {
+                    dispatch_async(dispatch_get_main_queue(), ^{ success(image); }); //return into main thread
+                }
+                failure:^(NSError *e) {
+                    dispatch_async(dispatch_get_main_queue(), ^{ failure(e); }); //return into main thread
+                }];
             }
-            
+            else
+            {
+                //bad request from server
+            }
         }
-        dispatch_semaphore_signal(semaphore);
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{ failure(error); }); //return into main thread
+        }
     }];
     [task resume];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    return result;
+}
+
+-(void)DownloadPic: (NSURL *) Url success:(void (^)(UIImage *image))success failure:(void(^)(NSError* error))failure{
+    
+    NSURLSessionDownloadTask* downloadtask = [session downloadTaskWithURL:Url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if(error == nil) success([UIImage imageWithData:[NSData dataWithContentsOfURL:location]]);
+        else failure(error);
+        
+    }];
+    [downloadtask resume];
+}
+
+-(void)GetImId: (NSString *) tag success:(void (^)(NSArray *responseArray))success failure:(void(^)(NSError* error))failure
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.flickr.com/services/rest/?method=flickr.photos.search&nojsoncallback=1&format=json&api_key=%@&tags=%@", key, tag]];
+    
+    NSURLSessionTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        if(error == nil)
+        {
+            NSError *e = nil;
+            NSDictionary *request = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingAllowFragments error: &e];
+            
+            if([[request valueForKey:@"stat"]  isEqual: @"ok"])
+            {
+                NSDictionary *photo  =  [[request valueForKey:@"photos"] valueForKey:@"photo"];
+                
+                for(NSDictionary *tag in photo)
+                {
+                    [result addObject: [tag valueForKey:(@"id")]];
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{ success(result); }); //return into main thread
+            }
+            else
+            {
+                //bad request from server
+            }
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{ failure(error); }); //return into main thread
+        }
+    }];
+    [task resume];
 }
 
 @end

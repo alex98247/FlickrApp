@@ -9,24 +9,26 @@
 #import "ViewController.h"
 #import "Flickr.h"
 
-@interface ViewController ()
-
+@interface ViewController (){
+    Flickr *fl;
+}
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    Flickr* fl = [[Flickr alloc] init];
-    [fl Flickr];
-    [fl GetHotTags:10];
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    if(fl == nil)
+    {
+        fl = [[Flickr alloc] init];
+        
+        [fl GetIm:_imId Size:@"Large" success:^(UIImage *image) {
+            _image.image = image;
+        } failure:^(NSError *error) {
+            //
+        }];
+    }
 }
 
 

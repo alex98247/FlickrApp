@@ -18,6 +18,7 @@
 		FA3458C51FC7586E00F25092 /* Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458C41FC7586E00F25092 /* Flickr.m */; };
 		FA3458C81FCB542800F25092 /* TagListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458C71FCB542800F25092 /* TagListTableViewController.m */; };
 		FA3458CB1FCC03CD00F25092 /* ImagesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458CA1FCC03CD00F25092 /* ImagesCollectionViewController.m */; };
+		FA3458CE1FD31F0200F25092 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3458CD1FD31F0200F25092 /* CollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		FA3458C71FCB542800F25092 /* TagListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TagListTableViewController.m; sourceTree = "<group>"; };
 		FA3458C91FCC03CD00F25092 /* ImagesCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagesCollectionViewController.h; sourceTree = "<group>"; };
 		FA3458CA1FCC03CD00F25092 /* ImagesCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagesCollectionViewController.m; sourceTree = "<group>"; };
+		FA3458CC1FD31F0200F25092 /* CollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
+		FA3458CD1FD31F0200F25092 /* CollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,8 @@
 				FA34589C1FC7554900F25092 /* LaunchScreen.storyboard */,
 				FA34589F1FC7554900F25092 /* Info.plist */,
 				FA3458A01FC7554900F25092 /* main.m */,
+				FA3458CC1FD31F0200F25092 /* CollectionViewCell.h */,
+				FA3458CD1FD31F0200F25092 /* CollectionViewCell.m */,
 			);
 			path = FlickrPic;
 			sourceTree = "<group>";
@@ -285,6 +290,7 @@
 				FA3458CB1FCC03CD00F25092 /* ImagesCollectionViewController.m in Sources */,
 				FA3458A11FC7554900F25092 /* main.m in Sources */,
 				FA3458C51FC7586E00F25092 /* Flickr.m in Sources */,
+				FA3458CE1FD31F0200F25092 /* CollectionViewCell.m in Sources */,
 				FA3458931FC7554900F25092 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
